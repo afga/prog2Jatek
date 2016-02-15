@@ -9,7 +9,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
         public override void Utkozes(JatekElem elem) { }
         public char Alak { get { return '\u2593'; } }
     }
-    class Jatekos : MozgoJatekElem, IKirajzolhato {
+    class Jatekos : MozgoJatekElem, IKirajzolhato, IMegjelenitheto {
         string nev;
         public string Nev { get { return nev; } }
         public Jatekos(string nev, int x, int y, JatekTer ter) : base(x, y, ter) {
@@ -17,6 +17,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
         }
         public override double Meret { get { return 0.2; } }
         public char Alak { get { if (Aktiv) return '\u263A'; else return '\u263B'; } }
+        public int[] MegjelenitendoMeret { get { return ter.MegjelenitendoMeret; } }
         public override void Utkozes(JatekElem elem) { }
         int eletero = 100;
         public void Serul(int hp) {
@@ -34,6 +35,19 @@ namespace OE.Prog2.Jatek.Szabalyok {
             int ujx = X + rx;
             int ujy = Y + ry;
             AtHelyez(ujx, ujy);
+        }
+        public IKirajzolhato[] MegjelenitedoElemek() {
+            JatekElem[] kozel = ter.MegadottHelyenLevok(X, Y, 5);
+            int db = 0;
+            foreach (JatekElem k in kozel)
+                if (k is IKirajzolhato)
+                    db++;
+            IKirajzolhato[] vissza = new IKirajzolhato[db];
+            int i = 0;
+            foreach (JatekElem k in kozel)
+                if (k is IKirajzolhato)
+                    vissza[i++] = k as IKirajzolhato;
+            return vissza;
         }
     }
     class Kincs : RogzitettJatekElem, IKirajzolhato {

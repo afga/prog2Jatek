@@ -1,6 +1,7 @@
 ﻿using System;
 using OE.Prog2.Jatek.Jatekter;
 using OE.Prog2.Jatek.Szabalyok;
+using OE.Prog2.Jatek.Megjelenites;
 
 namespace OE.Prog2.Jatek.Keret {
     class Keret {
@@ -37,7 +38,9 @@ namespace OE.Prog2.Jatek.Keret {
         }
         bool jatekVege = false;
         public void Futtatas() {
+            KonzolosMegjelenito km = new KonzolosMegjelenito(0, 0, ter);
             Jatekos jatekos = new Jatekos("Bela", 1, 1, ter);
+            KonzolosMegjelenito plM = new KonzolosMegjelenito(25, 0, jatekos);
             do {
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.LeftArrow) jatekos.Megy(-1, 0);
@@ -45,6 +48,8 @@ namespace OE.Prog2.Jatek.Keret {
                 if (key.Key == ConsoleKey.UpArrow) jatekos.Megy(0, -1);
                 if (key.Key == ConsoleKey.DownArrow) jatekos.Megy(0, 1);
                 if (key.Key == ConsoleKey.Escape) jatekVege = true;
+                km.Megjelenites();
+                plM.Megjelenites();
             } while (!jatekVege);
         }
     }
