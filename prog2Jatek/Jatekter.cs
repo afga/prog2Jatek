@@ -1,4 +1,5 @@
 ﻿using System;
+using OE.Prog2.Jatek.Megjelenites;
 
 namespace OE.Prog2.Jatek.Jatekter {
     abstract class JatekElem {
@@ -32,12 +33,12 @@ namespace OE.Prog2.Jatek.Jatekter {
         }
         public void AtHelyez(int ujx, int ujy) {
             JatekElem[] ujHely = ter.MegadottHelyenLevok(ujx, ujy);
-            foreach(JatekElem je in ujHely) {
+            foreach (JatekElem je in ujHely) {
                 if (!Aktiv)
                     break;
                 je.Utkozes(this);
             }
-            foreach(JatekElem je in ujHely) {
+            foreach (JatekElem je in ujHely) {
                 if (!Aktiv)
                     break;
                 this.Utkozes(je);
@@ -47,14 +48,14 @@ namespace OE.Prog2.Jatek.Jatekter {
                 double osszMeret = 0.0;
                 foreach (JatekElem je in ujHely)
                     osszMeret += je.Meret;
-                if(osszMeret + Meret <= 1.0) {
+                if (osszMeret + Meret <= 1.0) {
                     X = ujx;
                     Y = ujy;
                 }
             }
         }
     }
-    class JatekTer {
+    class JatekTer : IMegjelenitheto {
         const int MAX_ELEMSZAM = 1000;
         int elemN;
         JatekElem[] elemek = new JatekElem[MAX_ELEMSZAM];
@@ -66,6 +67,7 @@ namespace OE.Prog2.Jatek.Jatekter {
         public int MeretY {
             get { return meretY; }
         }
+        public int[] MegjelenitendoMeret { get { return new int[] { meretX, meretY }; } }
         public JatekTer(int meretX, int meretY) {
             this.meretX = meretX;
             this.meretY = meretY;
@@ -94,6 +96,18 @@ namespace OE.Prog2.Jatek.Jatekter {
         }
         public JatekElem[] MegadottHelyenLevok(int x, int y) {
             return MegadottHelyenLevok(x, y, 0);
+        }
+        public IKirajzolhato[] MegjelenitedoElemek() {
+            int db = 0;
+            foreach (JatekElem k in elemek)
+                if (k is IKirajzolhato)
+                    db++;
+            IKirajzolhato[] vissza = new IKirajzolhato[db];
+            int i = 0;
+            foreach (JatekElem k in elemek)
+                if (k is IKirajzolhato)
+                    vissza[i++] = k as IKirajzolhato;
+            return vissza;
         }
     }
 }
