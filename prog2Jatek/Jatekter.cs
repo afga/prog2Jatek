@@ -17,7 +17,6 @@ namespace OE.Prog2.Jatek.Jatekter {
             this.x = x;
             this.y = y;
             this.ter = ter;
-            ter.Felvesz(this);
         }
         public abstract double Meret { get; }
         public abstract void Utkozes(JatekElem elem);
@@ -29,6 +28,7 @@ namespace OE.Prog2.Jatek.Jatekter {
         bool aktiv;
         public MozgoJatekElem(int x, int y, JatekTer ter) : base(x, y, ter) {
             aktiv = true;
+            ter.Felvesz(this);
         }
         public bool Aktiv {
             get { return aktiv; }
