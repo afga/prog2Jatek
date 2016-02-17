@@ -102,7 +102,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
             if (elem is Jatekos) {
                 (elem as Jatekos).PontotSzerez(50);
                 ter.Torol(this);
-                
+                OnKincsFelvetelKezelo(elem as Jatekos);
             }
         }
     }
