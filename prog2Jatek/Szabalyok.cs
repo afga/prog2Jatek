@@ -12,6 +12,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
     }
     class Jatekos : MozgoJatekElem, IKirajzolhato, IMegjelenitheto {
         string nev;
+        public JatekosValtozasKezelo JatekosValtozas;
         public string Nev { get { return nev; } }
         public Jatekos(string nev, int x, int y, JatekTer ter)
             : base(x, y, ter) {
@@ -25,6 +26,8 @@ namespace OE.Prog2.Jatek.Szabalyok {
         public void Serul(int hp) {
             if (eletero != 0) {
                 eletero = eletero - hp < 0 ? 0 : eletero - hp;
+                if (JatekosValtozas != null)
+                    JatekosValtozas(this, pontszam, eletero);
                 if (eletero == 0)
                     Aktiv = false;
             }
@@ -32,6 +35,8 @@ namespace OE.Prog2.Jatek.Szabalyok {
         int pontszam = 0;
         public void PontotSzerez(int pont) {
             pontszam += pont;
+            if (JatekosValtozas != null)
+                JatekosValtozas(this, pontszam, eletero);
         }
         public void Megy(int rx, int ry) {
             int ujx = X + rx;
@@ -81,7 +86,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
     class GonoszGepiJatekos : GepiJatekos {
         public GonoszGepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }
         public override char Alak { get { return '\u2642'; } }
-        public new void Utkozes(JatekElem elem) {
+        public override void Utkozes(JatekElem elem) {
             base.Utkozes(elem);
             if (Aktiv && elem is Jatekos)
                 (elem as Jatekos).Serul(10);
@@ -89,12 +94,6 @@ namespace OE.Prog2.Jatek.Szabalyok {
     }
     class Kincs : RogzitettJatekElem, IKirajzolhato {
         public event KincsFelvetelKezelo KincsFelvetel;
-        protected virtual void OnKincsFelvetelKezelo(Jatekos j) {
-            KincsFelvetelKezelo handler = KincsFelvetel;
-            if (handler != null) {
-                handler(this, j);
-            }
-        }
         public Kincs(int x, int y, JatekTer ter) : base(x, y, ter) { }
         public override double Meret { get { return 1.0; } }
         public char Alak { get { return '\u2666'; } }
@@ -102,9 +101,12 @@ namespace OE.Prog2.Jatek.Szabalyok {
             if (elem is Jatekos) {
                 (elem as Jatekos).PontotSzerez(50);
                 ter.Torol(this);
-                OnKincsFelvetelKezelo(elem as Jatekos);
+                if (KincsFelvetel != null) {
+                    KincsFelvetel(this, elem as Jatekos);
+                }
             }
         }
     }
-    delegate void KincsFelvetelKezelo(Kincs kincs, Jatekos jatekos); 
+    delegate void KincsFelvetelKezelo(Kincs kincs, Jatekos jatekos);
+    delegate void JatekosValtozasKezelo(Jatekos jatekos, int ujpont, int ujelet);
 }

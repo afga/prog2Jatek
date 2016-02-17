@@ -11,6 +11,7 @@ namespace OE.Prog2.Jatek.Keret {
         const int KINCSEK_SZAMA = 10;
         JatekTer ter;
         OrajelGenerator generator;
+        int megtalaltKincsek = 0;
         void PalyaGeneralas() {
             Random R = new Random();
             for (int i = 0; i < PALYA_MERET_X; i++) {
@@ -31,7 +32,9 @@ namespace OE.Prog2.Jatek.Keret {
                     nemUres = (ter.MegadottHelyenLevok(ujx, ujy)).Length != 0;
                     jatekos = ujx == 1 && ujy == 1;
                 } while (nemUres || jatekos);
-                ter.Felvesz(new Kincs(ujx, ujy, ter));
+                Kincs k = new Kincs(ujx, ujy, ter);
+                k.KincsFelvetel += KincsFelvetelTortent;
+                ter.Felvesz(k);
             }
         }
         public Keret() {
@@ -42,10 +45,13 @@ namespace OE.Prog2.Jatek.Keret {
         bool jatekVege = false;
         public void Futtatas() {
             Jatekos jatekos = new Jatekos("Bela", 1, 1, ter);
+            jatekos.JatekosValtozas += JatekosValtozasTortent;
             GepiJatekos gJatekos = new GepiJatekos("Kati", 1, 2, ter);
             GonoszGepiJatekos ggJatekos = new GonoszGepiJatekos("Laci", PALYA_MERET_X / 2, PALYA_MERET_Y / 2, ter);
             KonzolosMegjelenito km = new KonzolosMegjelenito(0, 0, ter);
             KonzolosMegjelenito plM = new KonzolosMegjelenito(25, 0, jatekos);
+            KonzolosEredmenyAblak kea = new KonzolosEredmenyAblak(0, 12, 5);
+            kea.JatekosFeliratkozas(jatekos);
             generator.Felvetel(gJatekos);
             generator.Felvetel(ggJatekos);
             generator.Felvetel(km);
@@ -58,6 +64,16 @@ namespace OE.Prog2.Jatek.Keret {
                 if (key.Key == ConsoleKey.DownArrow) jatekos.Megy(0, 1);
                 if (key.Key == ConsoleKey.Escape) jatekVege = true;
             } while (!jatekVege);
+
+        }
+        void KincsFelvetelTortent(Kincs kincs, Jatekos jatekos) {
+            megtalaltKincsek++;
+            if (megtalaltKincsek == KINCSEK_SZAMA)
+                jatekVege = true;
+        }
+        void JatekosValtozasTortent(Jatekos Jatekos, int ujpont, int ujelet) {
+            if (ujelet == 0)
+                jatekVege = true;
         }
     }
 }
