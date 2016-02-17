@@ -1,6 +1,7 @@
 ﻿using System;
 using OE.Prog2.Jatek.Jatekter;
 using OE.Prog2.Jatek.Megjelenites;
+using OE.Prog2.Jatek.Automatizmus;
 
 namespace OE.Prog2.Jatek.Szabalyok {
     class Fal : RogzitettJatekElem, IKirajzolhato {
@@ -12,7 +13,8 @@ namespace OE.Prog2.Jatek.Szabalyok {
     class Jatekos : MozgoJatekElem, IKirajzolhato, IMegjelenitheto {
         string nev;
         public string Nev { get { return nev; } }
-        public Jatekos(string nev, int x, int y, JatekTer ter) : base(x, y, ter) {
+        public Jatekos(string nev, int x, int y, JatekTer ter)
+            : base(x, y, ter) {
             this.nev = nev;
         }
         public override double Meret { get { return 0.2; } }
@@ -50,7 +52,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
             return vissza;
         }
     }
-    class GepiJatekos : Jatekos {
+    class GepiJatekos : Jatekos, IAutomatikusanMukodo {
         static Random rnd = new Random();
         public GepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }
         public void Mozgas() {
@@ -71,6 +73,10 @@ namespace OE.Prog2.Jatek.Szabalyok {
             }
         }
         public override char Alak { get { return '\u2640'; } }
+        public void Mukodik() {
+            Mozgas();
+        }
+        public int MukodesIntervallum { get { return 2; } }
     }
     class GonoszGepiJatekos : GepiJatekos {
         public GonoszGepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }

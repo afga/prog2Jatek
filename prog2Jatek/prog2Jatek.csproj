@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automatizmus.cs" />
     <Compile Include="Keret.cs" />
     <Compile Include="Megjelenites.cs" />
+    <Compile Include="OrajelGenerator.cs" />
     <Compile Include="Szabalyok.cs" />
     <Compile Include="Jatekter.cs" />
     <Compile Include="MainClass.cs" />

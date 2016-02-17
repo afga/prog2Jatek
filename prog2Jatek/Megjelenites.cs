@@ -1,4 +1,5 @@
 ﻿using System;
+using OE.Prog2.Jatek.Automatizmus;
 
 namespace OE.Prog2.Jatek.Megjelenites {
     public interface IKirajzolhato {
@@ -10,7 +11,7 @@ namespace OE.Prog2.Jatek.Megjelenites {
         int[] MegjelenitendoMeret { get; }
         IKirajzolhato[] MegjelenitedoElemek();
     }
-    class KonzolosMegjelenito {
+    class KonzolosMegjelenito : IAutomatikusanMukodo {
         IMegjelenitheto forras;
         int pozX;
         int pozY;
@@ -36,5 +37,9 @@ namespace OE.Prog2.Jatek.Megjelenites {
                 }
             }
         }
+        public void Mukodik() {
+            Megjelenites();
+        }
+        public int MukodesIntervallum { get { return 1; } }
     }
 }

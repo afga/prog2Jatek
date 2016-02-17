@@ -2,6 +2,7 @@
 using OE.Prog2.Jatek.Jatekter;
 using OE.Prog2.Jatek.Szabalyok;
 using OE.Prog2.Jatek.Megjelenites;
+using OE.Prog2.Jatek.Automatizmus;
 
 namespace OE.Prog2.Jatek.Keret {
     class Keret {
@@ -9,6 +10,7 @@ namespace OE.Prog2.Jatek.Keret {
         const int PALYA_MERET_Y = 11;
         const int KINCSEK_SZAMA = 10;
         JatekTer ter;
+        OrajelGenerator generator;
         void PalyaGeneralas() {
             Random R = new Random();
             for (int i = 0; i < PALYA_MERET_X; i++) {
@@ -26,7 +28,7 @@ namespace OE.Prog2.Jatek.Keret {
                 do {
                     ujx = R.Next(1, PALYA_MERET_X - 1);
                     ujy = R.Next(1, PALYA_MERET_Y - 1);
-                    nemUres = ter.MegadottHelyenLevok(ujx, ujy) != null;
+                    nemUres = (ter.MegadottHelyenLevok(ujx, ujy)).Length != 0;
                     jatekos = ujx == 1 && ujy == 1;
                 } while (nemUres || jatekos);
                 ter.Felvesz(new Kincs(ujx, ujy, ter));
@@ -34,17 +36,20 @@ namespace OE.Prog2.Jatek.Keret {
         }
         public Keret() {
             ter = new JatekTer(PALYA_MERET_X, PALYA_MERET_Y);
+            generator = new OrajelGenerator();
             PalyaGeneralas();
         }
         bool jatekVege = false;
         public void Futtatas() {
-            KonzolosMegjelenito km = new KonzolosMegjelenito(0, 0, ter);
             Jatekos jatekos = new Jatekos("Bela", 1, 1, ter);
             GepiJatekos gJatekos = new GepiJatekos("Kati", 1, 2, ter);
             GonoszGepiJatekos ggJatekos = new GonoszGepiJatekos("Laci", PALYA_MERET_X / 2, PALYA_MERET_Y / 2, ter);
+            KonzolosMegjelenito km = new KonzolosMegjelenito(0, 0, ter);
             KonzolosMegjelenito plM = new KonzolosMegjelenito(25, 0, jatekos);
-            km.Megjelenites();
-            plM.Megjelenites();
+            generator.Felvetel(gJatekos);
+            generator.Felvetel(ggJatekos);
+            generator.Felvetel(km);
+            generator.Felvetel(plM);
             do {
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.LeftArrow) jatekos.Megy(-1, 0);
@@ -52,8 +57,6 @@ namespace OE.Prog2.Jatek.Keret {
                 if (key.Key == ConsoleKey.UpArrow) jatekos.Megy(0, -1);
                 if (key.Key == ConsoleKey.DownArrow) jatekos.Megy(0, 1);
                 if (key.Key == ConsoleKey.Escape) jatekVege = true;
-                km.Megjelenites();
-                plM.Megjelenites();
             } while (!jatekVege);
         }
     }
