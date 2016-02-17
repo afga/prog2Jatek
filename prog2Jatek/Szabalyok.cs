@@ -106,5 +106,5 @@ namespace OE.Prog2.Jatek.Szabalyok {
             }
         }
     }
-    public delegate void KincsFelvetelKezelo(Kincs kincs, Jatekos jatekos); 
+    delegate void KincsFelvetelKezelo(Kincs kincs, Jatekos jatekos); 
 }
