@@ -53,7 +53,7 @@ namespace OE.Prog2.Jatek.Megjelenites {
             this.maxSorSzam = maxSorSzam;
         }
         void JatekosValtozasTortent(Jatekos jatekos, int ujpont, int ujelet) {
-            SzalbiztosKonzol.KiirasXY(pozX, pozY + sor, String.Format("játékos neve: {0}, pontszáma: {1}, életereje: {2}", jatekos.Nev, ujpont, ujelet));
+            SzalbiztosKonzol.KiirasXY(pozX, pozY + sor, string.Format("játékos neve: {0}, pontszáma: {1}, életereje: {2}                ", jatekos.Nev, ujpont, ujelet));
             sor = sor + 1 >= maxSorSzam ? 0 : sor + 1;
         }
         public void JatekosFeliratkozas(Jatekos jatekos) {

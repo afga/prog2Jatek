@@ -64,7 +64,6 @@ namespace OE.Prog2.Jatek.Keret {
                 if (key.Key == ConsoleKey.DownArrow) jatekos.Megy(0, 1);
                 if (key.Key == ConsoleKey.Escape) jatekVege = true;
             } while (!jatekVege);
-
         }
         void KincsFelvetelTortent(Kincs kincs, Jatekos jatekos) {
             megtalaltKincsek++;
