@@ -88,6 +88,13 @@ namespace OE.Prog2.Jatek.Szabalyok {
         }
     }
     class Kincs : RogzitettJatekElem, IKirajzolhato {
+        public event KincsFelvetelKezelo KincsFelvetel;
+        protected virtual void OnKincsFelvetelKezelo(Jatekos j) {
+            KincsFelvetelKezelo handler = KincsFelvetel;
+            if (handler != null) {
+                handler(this, j);
+            }
+        }
         public Kincs(int x, int y, JatekTer ter) : base(x, y, ter) { }
         public override double Meret { get { return 1.0; } }
         public char Alak { get { return '\u2666'; } }
@@ -95,7 +102,9 @@ namespace OE.Prog2.Jatek.Szabalyok {
             if (elem is Jatekos) {
                 (elem as Jatekos).PontotSzerez(50);
                 ter.Torol(this);
+                
             }
         }
     }
+    public delegate void KincsFelvetelKezelo(Kincs kincs, Jatekos jatekos); 
 }
