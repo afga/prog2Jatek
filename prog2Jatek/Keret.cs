@@ -40,7 +40,11 @@ namespace OE.Prog2.Jatek.Keret {
         public void Futtatas() {
             KonzolosMegjelenito km = new KonzolosMegjelenito(0, 0, ter);
             Jatekos jatekos = new Jatekos("Bela", 1, 1, ter);
+            GepiJatekos gJatekos = new GepiJatekos("Kati", 1, 2, ter);
+            GonoszGepiJatekos ggJatekos = new GonoszGepiJatekos("Laci", PALYA_MERET_X / 2, PALYA_MERET_Y / 2, ter);
             KonzolosMegjelenito plM = new KonzolosMegjelenito(25, 0, jatekos);
+            km.Megjelenites();
+            plM.Megjelenites();
             do {
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 if (key.Key == ConsoleKey.LeftArrow) jatekos.Megy(-1, 0);

@@ -87,7 +87,7 @@ namespace OE.Prog2.Jatek.Jatekter {
             int db = 0;
             JatekElem[] tmp = new JatekElem[elemN];
             for (int i = 0; i < elemN; i++)
-                if (Math.Sqrt(elemek[i].X * elemek[i].X + elemek[i].Y * elemek[i].Y) <= tavolsag)
+                if (Math.Sqrt(Math.Pow(x - elemek[i].X, 2) + Math.Pow(y - elemek[i].Y, 2)) <= tavolsag)
                     tmp[db++] = elemek[i];
             JatekElem[] vissza = new JatekElem[db];
             for (int i = 0; i < db; i++)

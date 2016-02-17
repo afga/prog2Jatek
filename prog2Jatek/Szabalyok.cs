@@ -16,7 +16,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
             this.nev = nev;
         }
         public override double Meret { get { return 0.2; } }
-        public char Alak { get { if (Aktiv) return '\u263A'; else return '\u263B'; } }
+        public virtual char Alak { get { if (Aktiv) return '\u263A'; else return '\u263B'; } }
         public int[] MegjelenitendoMeret { get { return ter.MegjelenitendoMeret; } }
         public override void Utkozes(JatekElem elem) { }
         int eletero = 100;
@@ -48,6 +48,37 @@ namespace OE.Prog2.Jatek.Szabalyok {
                 if (k is IKirajzolhato)
                     vissza[i++] = k as IKirajzolhato;
             return vissza;
+        }
+    }
+    class GepiJatekos : Jatekos {
+        static Random rnd = new Random();
+        public GepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }
+        public void Mozgas() {
+            int x = rnd.Next(0, 4);
+            switch (x) {
+                case 0:
+                    Megy(0, -1);
+                    break;
+                case 1:
+                    Megy(1, 0);
+                    break;
+                case 2:
+                    Megy(0, 1);
+                    break;
+                case 3:
+                    Megy(-1, 0);
+                    break;
+            }
+        }
+        public override char Alak { get { return '\u2640'; } }
+    }
+    class GonoszGepiJatekos : GepiJatekos {
+        public GonoszGepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }
+        public override char Alak { get { return '\u2642'; } }
+        public new void Utkozes(JatekElem elem) {
+            base.Utkozes(elem);
+            if (Aktiv && elem is Jatekos)
+                (elem as Jatekos).Serul(10);
         }
     }
     class Kincs : RogzitettJatekElem, IKirajzolhato {
