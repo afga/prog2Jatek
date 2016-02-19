@@ -61,20 +61,39 @@ namespace OE.Prog2.Jatek.Szabalyok {
         static Random rnd = new Random();
         public GepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }
         public void Mozgas() {
+            bool sikerult = false;
+            int iter = 1;
             int x = rnd.Next(0, 4);
-            switch (x) {
-                case 0:
-                    Megy(0, -1);
-                    break;
-                case 1:
-                    Megy(1, 0);
-                    break;
-                case 2:
-                    Megy(0, 1);
-                    break;
-                case 3:
-                    Megy(-1, 0);
-                    break;
+            while (!sikerult) {
+                try {
+                    switch (x) {
+                        case 0:
+                            Megy(0, -1);
+                            sikerult = true;
+                            break;
+                        case 1:
+                            Megy(1, 0);
+                            sikerult = true;
+                            break;
+                        case 2:
+                            Megy(0, 1);
+                            sikerult = true;
+                            break;
+                        case 3:
+                            Megy(-1, 0);
+                            sikerult = true;
+                            break;
+                    }
+                }
+                catch (MozgasHelyHianyMiattNemSikerultKivetel k) {
+                    if (iter < 4) {
+                        iter++;
+                        x++;
+                        x %= 4;
+                    }
+                    else
+                        sikerult = true;
+                }
             }
         }
         public override char Alak { get { return '\u2640'; } }
@@ -109,4 +128,26 @@ namespace OE.Prog2.Jatek.Szabalyok {
     }
     delegate void KincsFelvetelKezelo(Kincs kincs, Jatekos jatekos);
     delegate void JatekosValtozasKezelo(Jatekos jatekos, int ujpont, int ujelet);
+    class MozgasNemSikerult : Exception {
+        JatekElem jatekElem;
+        public JatekElem JatekElem { get { return JatekElem; } }
+        int x, y;
+        public int X { get { return x; } }
+        public int Y { get { return y; } }
+        public MozgasNemSikerult(JatekElem jatekElem, int x, int y) {
+            this.jatekElem = jatekElem;
+            this.x = x;
+            this.y = y;
+        }
+    }
+    class MozgasHalalMiattNemSikerult : MozgasNemSikerult {
+        public MozgasHalalMiattNemSikerult(JatekElem jatekElem, int x, int y) : base(jatekElem, x, y) { }
+    }
+    class MozgasHelyHianyMiattNemSikerultKivetel : MozgasNemSikerult {
+        JatekElem[] elemek;
+        public JatekElem[] Elemek { get { return elemek; } }
+        public MozgasHelyHianyMiattNemSikerultKivetel(JatekElem[] elemek, JatekElem jatekElem, int x, int y) : base(jatekElem, x, y) {
+            this.elemek = elemek;
+        }
+    }
 }

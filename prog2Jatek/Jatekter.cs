@@ -1,5 +1,6 @@
 ﻿using System;
 using OE.Prog2.Jatek.Megjelenites;
+using OE.Prog2.Jatek.Szabalyok;
 
 namespace OE.Prog2.Jatek.Jatekter {
     abstract class JatekElem {
@@ -38,12 +39,12 @@ namespace OE.Prog2.Jatek.Jatekter {
             JatekElem[] ujHely = ter.MegadottHelyenLevok(ujx, ujy);
             foreach (JatekElem je in ujHely) {
                 if (!Aktiv)
-                    break;
+                    throw new MozgasHalalMiattNemSikerult(this, ujx, ujy);
                 je.Utkozes(this);
             }
             foreach (JatekElem je in ujHely) {
                 if (!Aktiv)
-                    break;
+                    throw new MozgasHalalMiattNemSikerult(this, ujx, ujy);
                 this.Utkozes(je);
             }
             if (Aktiv) {
@@ -55,6 +56,8 @@ namespace OE.Prog2.Jatek.Jatekter {
                     X = ujx;
                     Y = ujy;
                 }
+                else
+                    throw new MozgasHelyHianyMiattNemSikerultKivetel(ujHely, this, ujx, ujy);
             }
         }
     }

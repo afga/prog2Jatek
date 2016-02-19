@@ -1,6 +1,6 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace OE.Prog2.Jatek.Automatizmus {
     class OrajelGenerator {
@@ -23,7 +23,12 @@ namespace OE.Prog2.Jatek.Automatizmus {
                 // akinek most epp aktualis, az kap egy orajelet
                 for (int i = 0; i < mukodoN; i++)
                     if (aktivalasN % mukodok[i].MukodesIntervallum == 0)
-                        mukodok[i].Mukodik();
+                        try {
+                            mukodok[i].Mukodik();
+                        }
+                        catch (Exception e) {
+                            File.WriteAllText("log.txt", e.Data.ToString());
+                        }
 
                 feldolgozasAlatt = false;
             }
