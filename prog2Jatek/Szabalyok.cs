@@ -146,8 +146,65 @@ namespace OE.Prog2.Jatek.Szabalyok {
     class MozgasHelyHianyMiattNemSikerultKivetel : MozgasNemSikerult {
         JatekElem[] elemek;
         public JatekElem[] Elemek { get { return elemek; } }
-        public MozgasHelyHianyMiattNemSikerultKivetel(JatekElem[] elemek, JatekElem jatekElem, int x, int y) : base(jatekElem, x, y) {
+        public MozgasHelyHianyMiattNemSikerultKivetel(JatekElem[] elemek, JatekElem jatekElem, int x, int y)
+            : base(jatekElem, x, y) {
             this.elemek = elemek;
+        }
+    }
+    public class BacktrackElhelyezo {
+        JatekTer ter;
+        JatekElem[] elemek;
+        int[,] uresPoziciok;
+        public BacktrackElhelyezo(JatekTer ter) {
+            this.ter = ter;
+            int db = (ter.MeretX * ter.MeretY) - ter.ElemN;
+            uresPoziciok = new int[db, 2];
+            int k = 0;
+            for (int i = 0; i < ter.MeretX; i++)
+                for (int j = 0; j < ter.MeretY; j++)
+                    if (ter.MegadottHelyenLevok(i, j).Length == 0) {
+                        uresPoziciok[k, 0] = i;
+                        uresPoziciok[k++, 1] = j;
+                    }
+        }
+        bool Ft(int szint, int hely) {
+            if (elemek[szint] is Jatekos) {
+                return (uresPoziciok[hely, 0] > 0 && uresPoziciok[hely, 0] < (ter.MeretX - 1) && uresPoziciok[hely, 1] > 0 && uresPoziciok[hely, 1] < (ter.MeretY - 1));
+            }
+            else {
+                return (uresPoziciok[hely, 0] > 1 && uresPoziciok[hely, 0] < (ter.MeretX - 2) && uresPoziciok[hely, 1] > 1 && uresPoziciok[hely, 1] < (ter.MeretY - 2));
+            }
+        }
+        bool Fk(int szint, int hely, int k, int khely) {
+            if (elemek[szint] is Jatekos && elemek[k] is Jatekos) {
+                int xt = Math.Abs(uresPoziciok[hely, 0] - uresPoziciok[khely, 0]);
+                int yt = Math.Abs(uresPoziciok[hely, 1] - uresPoziciok[khely, 1]);
+                double tav = Math.Sqrt(xt * xt + yt * yt);
+                bool xEgyenlo = uresPoziciok[hely, 0] == uresPoziciok[khely, 1];
+                bool yEgyenlo = uresPoziciok[hely, 1] == uresPoziciok[khely, 1];
+                bool rosszTav = tav <= 5;
+                if (rosszTav)
+                    return false;
+                else if (xEgyenlo || yEgyenlo)
+                    return false;
+                else
+                    return true;
+            }
+            else {
+                int xt = Math.Abs(uresPoziciok[hely, 0] - uresPoziciok[khely, 0]);
+                int yt = Math.Abs(uresPoziciok[hely, 1] - uresPoziciok[khely, 1]);
+                double tav = Math.Sqrt(xt * xt + yt * yt);
+                return tav <= 2;
+            }
+        }
+        void Backtrack(int szint, int[,] E, ref bool van) {
+            int i = 0;
+            while (!van && i < uresPoziciok.GetLength(0)) {
+                if (Ft(szint, i)) {
+                    int k = 1;
+                }
+
+            }
         }
     }
 }

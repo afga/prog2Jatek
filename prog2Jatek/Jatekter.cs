@@ -64,6 +64,7 @@ namespace OE.Prog2.Jatek.Jatekter {
     class JatekTer : IMegjelenitheto {
         const int MAX_ELEMSZAM = 1000;
         int elemN;
+        public int ElemN { get { return elemN; } }
         JatekElem[] elemek = new JatekElem[MAX_ELEMSZAM];
         int meretX;
         public int MeretX {
