@@ -3,7 +3,7 @@ using OE.Prog2.Jatek.Megjelenites;
 using OE.Prog2.Jatek.Szabalyok;
 
 namespace OE.Prog2.Jatek.Jatekter {
-    abstract class JatekElem {
+    public abstract class JatekElem {
         int x, y;
         public int X {
             get { return x; }
@@ -61,7 +61,7 @@ namespace OE.Prog2.Jatek.Jatekter {
             }
         }
     }
-    class JatekTer : IMegjelenitheto {
+    public class JatekTer : IMegjelenitheto {
         const int MAX_ELEMSZAM = 1000;
         int elemN;
         public int ElemN { get { return elemN; } }
