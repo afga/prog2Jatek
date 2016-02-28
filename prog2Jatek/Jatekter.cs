@@ -4,37 +4,31 @@ using OE.Prog2.Jatek.Szabalyok;
 
 namespace OE.Prog2.Jatek.Jatekter {
     public abstract class JatekElem {
-        int x, y;
-        public int X {
-            get { return x; }
-            set { x = value; }
-        }
-        public int Y {
-            get { return y; }
-            set { y = value; }
-        }
+        public int X { get; set; }
+        public int Y { get; set; }
         protected JatekTer ter;
         public JatekElem(int x, int y, JatekTer ter) {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
             this.ter = ter;
         }
         public abstract double Meret { get; }
         public abstract void Utkozes(JatekElem elem);
     }
+
     abstract class RogzitettJatekElem : JatekElem {
-        public RogzitettJatekElem(int x, int y, JatekTer ter) : base(x, y, ter) { }
+        public RogzitettJatekElem(int x, int y, JatekTer ter)
+            : base(x, y, ter) {
+        }
     }
+
     abstract class MozgoJatekElem : JatekElem {
-        bool aktiv;
-        public MozgoJatekElem(int x, int y, JatekTer ter) : base(x, y, ter) {
-            aktiv = true;
+        public MozgoJatekElem(int x, int y, JatekTer ter)
+            : base(x, y, ter) {
+            Aktiv = true;
             ter.Felvesz(this);
         }
-        public bool Aktiv {
-            get { return aktiv; }
-            set { aktiv = value; }
-        }
+        public bool Aktiv { get; set; }
         public void AtHelyez(int ujx, int ujy) {
             JatekElem[] ujHely = ter.MegadottHelyenLevok(ujx, ujy);
             foreach (JatekElem je in ujHely) {
@@ -45,7 +39,7 @@ namespace OE.Prog2.Jatek.Jatekter {
             foreach (JatekElem je in ujHely) {
                 if (!Aktiv)
                     throw new MozgasHalalMiattNemSikerult(this, ujx, ujy);
-                this.Utkozes(je);
+                Utkozes(je);
             }
             if (Aktiv) {
                 ujHely = ter.MegadottHelyenLevok(ujx, ujy);
@@ -61,6 +55,7 @@ namespace OE.Prog2.Jatek.Jatekter {
             }
         }
     }
+
     public class JatekTer : IMegjelenitheto {
         const int MAX_ELEMSZAM = 1000;
         int elemN;
@@ -74,7 +69,7 @@ namespace OE.Prog2.Jatek.Jatekter {
         public int MeretY {
             get { return meretY; }
         }
-        public int[] MegjelenitendoMeret { get { return new int[] { meretX, meretY }; } }
+        public int[] MegjelenitendoMeret { get { return new [] { meretX, meretY }; } }
         public JatekTer(int meretX, int meretY) {
             this.meretX = meretX;
             this.meretY = meretY;

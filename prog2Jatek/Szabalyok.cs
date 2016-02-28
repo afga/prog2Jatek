@@ -5,11 +5,15 @@ using OE.Prog2.Jatek.Automatizmus;
 
 namespace OE.Prog2.Jatek.Szabalyok {
     class Fal : RogzitettJatekElem, IKirajzolhato {
-        public Fal(int x, int y, JatekTer ter) : base(x, y, ter) { }
+        public Fal(int x, int y, JatekTer ter)
+            : base(x, y, ter) {
+        }
         public override double Meret { get { return 1.0; } }
-        public override void Utkozes(JatekElem elem) { }
+        public override void Utkozes(JatekElem elem) {
+        }
         public char Alak { get { return '\u2593'; } }
     }
+
     class Jatekos : MozgoJatekElem, IKirajzolhato, IMegjelenitheto {
         string nev;
         public JatekosValtozasKezelo JatekosValtozas;
@@ -19,20 +23,20 @@ namespace OE.Prog2.Jatek.Szabalyok {
             this.nev = nev;
         }
         public override double Meret { get { return 0.2; } }
-        public virtual char Alak { get { if (Aktiv) return '\u263A'; else return '\u263B'; } }
+        public virtual char Alak { get { return Aktiv ? '\u263A' : '\u263B'; } }
         public int[] MegjelenitendoMeret { get { return ter.MegjelenitendoMeret; } }
-        public override void Utkozes(JatekElem elem) { }
+        public override void Utkozes(JatekElem elem) {
+        }
         int eletero = 100;
         public void Serul(int hp) {
             if (eletero != 0) {
                 eletero = eletero - hp < 0 ? 0 : eletero - hp;
                 if (JatekosValtozas != null)
                     JatekosValtozas(this, pontszam, eletero);
-                if (eletero == 0)
-                    Aktiv = false;
+                Aktiv = eletero != 0;
             }
         }
-        int pontszam = 0;
+        int pontszam;
         public void PontotSzerez(int pont) {
             pontszam += pont;
             if (JatekosValtozas != null)
@@ -57,9 +61,12 @@ namespace OE.Prog2.Jatek.Szabalyok {
             return vissza;
         }
     }
+
     class GepiJatekos : Jatekos, IAutomatikusanMukodo {
         static Random rnd = new Random();
-        public GepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }
+        public GepiJatekos(string nev, int x, int y, JatekTer ter)
+            : base(nev, x, y, ter) {
+        }
         public void Mozgas() {
             bool sikerult = false;
             int iter = 1;
@@ -102,8 +109,11 @@ namespace OE.Prog2.Jatek.Szabalyok {
         }
         public int MukodesIntervallum { get { return 2; } }
     }
+
     class GonoszGepiJatekos : GepiJatekos {
-        public GonoszGepiJatekos(string nev, int x, int y, JatekTer ter) : base(nev, x, y, ter) { }
+        public GonoszGepiJatekos(string nev, int x, int y, JatekTer ter)
+            : base(nev, x, y, ter) {
+        }
         public override char Alak { get { return '\u2642'; } }
         public override void Utkozes(JatekElem elem) {
             base.Utkozes(elem);
@@ -111,9 +121,12 @@ namespace OE.Prog2.Jatek.Szabalyok {
                 (elem as Jatekos).Serul(10);
         }
     }
+
     class Kincs : RogzitettJatekElem, IKirajzolhato {
         public event KincsFelvetelKezelo KincsFelvetel;
-        public Kincs(int x, int y, JatekTer ter) : base(x, y, ter) { }
+        public Kincs(int x, int y, JatekTer ter)
+            : base(x, y, ter) {
+        }
         public override double Meret { get { return 1.0; } }
         public char Alak { get { return '\u2666'; } }
         public override void Utkozes(JatekElem elem) {
@@ -140,9 +153,13 @@ namespace OE.Prog2.Jatek.Szabalyok {
             this.y = y;
         }
     }
+
     class MozgasHalalMiattNemSikerult : MozgasNemSikerult {
-        public MozgasHalalMiattNemSikerult(JatekElem jatekElem, int x, int y) : base(jatekElem, x, y) { }
+        public MozgasHalalMiattNemSikerult(JatekElem jatekElem, int x, int y)
+            : base(jatekElem, x, y) {
+        }
     }
+
     class MozgasHelyHianyMiattNemSikerultKivetel : MozgasNemSikerult {
         JatekElem[] elemek;
         public JatekElem[] Elemek { get { return elemek; } }
@@ -151,6 +168,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
             this.elemek = elemek;
         }
     }
+
     public class BacktrackElhelyezo {
         JatekTer ter;
         JatekElem[] elemek;
@@ -168,12 +186,11 @@ namespace OE.Prog2.Jatek.Szabalyok {
                     }
         }
         bool Ft(int szint, int hely) {
-            if (elemek[szint] is Jatekos) {
+            if (elemek[szint] is Jatekos)
                 return (uresPoziciok[hely, 0] > 0 && uresPoziciok[hely, 0] < (ter.MeretX - 1) && uresPoziciok[hely, 1] > 0 && uresPoziciok[hely, 1] < (ter.MeretY - 1));
-            }
-            else {
-                return (uresPoziciok[hely, 0] > 1 && uresPoziciok[hely, 0] < (ter.MeretX - 2) && uresPoziciok[hely, 1] > 1 && uresPoziciok[hely, 1] < (ter.MeretY - 2));
-            }
+            
+            return (uresPoziciok[hely, 0] > 1 && uresPoziciok[hely, 0] < (ter.MeretX - 2) && uresPoziciok[hely, 1] > 1 && uresPoziciok[hely, 1] < (ter.MeretY - 2));
+            
         }
         bool Fk(int szint, int hely, int k, int khely) {
             if (elemek[szint] is Jatekos && elemek[k] is Jatekos) {
@@ -185,10 +202,10 @@ namespace OE.Prog2.Jatek.Szabalyok {
                 bool rosszTav = tav <= 5;
                 if (rosszTav)
                     return false;
-                else if (xEgyenlo || yEgyenlo)
+                if (xEgyenlo || yEgyenlo)
                     return false;
-                else
-                    return true;
+                
+                return true;
             }
             else {
                 int xt = Math.Abs(uresPoziciok[hely, 0] - uresPoziciok[khely, 0]);

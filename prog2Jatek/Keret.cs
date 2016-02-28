@@ -11,7 +11,7 @@ namespace OE.Prog2.Jatek.Keret {
         const int KINCSEK_SZAMA = 10;
         JatekTer ter;
         OrajelGenerator generator;
-        int megtalaltKincsek = 0;
+        int megtalaltKincsek;
         void PalyaGeneralas() {
             Random R = new Random();
             for (int i = 0; i < PALYA_MERET_X; i++) {
@@ -24,8 +24,8 @@ namespace OE.Prog2.Jatek.Keret {
             }
             for (int i = 0; i < KINCSEK_SZAMA; i++) {
                 int ujx, ujy;
-                bool nemUres = true;
-                bool jatekos = true;
+                bool nemUres;
+                bool jatekos;
                 do {
                     ujx = R.Next(1, PALYA_MERET_X - 1);
                     ujy = R.Next(1, PALYA_MERET_Y - 1);
@@ -42,7 +42,7 @@ namespace OE.Prog2.Jatek.Keret {
             generator = new OrajelGenerator();
             PalyaGeneralas();
         }
-        bool jatekVege = false;
+        bool jatekVege;
         public void Futtatas() {
             Jatekos jatekos = new Jatekos("Bela", 1, 1, ter);
             jatekos.JatekosValtozas += JatekosValtozasTortent;
@@ -59,25 +59,27 @@ namespace OE.Prog2.Jatek.Keret {
             do {
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 try {
-                    if (key.Key == ConsoleKey.LeftArrow) jatekos.Megy(-1, 0);
-                    if (key.Key == ConsoleKey.RightArrow) jatekos.Megy(1, 0);
-                    if (key.Key == ConsoleKey.UpArrow) jatekos.Megy(0, -1);
-                    if (key.Key == ConsoleKey.DownArrow) jatekos.Megy(0, 1);
+                    if (key.Key == ConsoleKey.LeftArrow)
+                        jatekos.Megy(-1, 0);
+                    if (key.Key == ConsoleKey.RightArrow)
+                        jatekos.Megy(1, 0);
+                    if (key.Key == ConsoleKey.UpArrow)
+                        jatekos.Megy(0, -1);
+                    if (key.Key == ConsoleKey.DownArrow)
+                        jatekos.Megy(0, 1);
                 }
                 catch (MozgasHelyHianyMiattNemSikerultKivetel k) {
                     Console.Beep(500 + k.Elemek.Length * 100, 10);
                 }
-                if (key.Key == ConsoleKey.Escape) jatekVege = true;
+                jatekVege = key.Key == ConsoleKey.Escape;
             } while (!jatekVege);
         }
         void KincsFelvetelTortent(Kincs kincs, Jatekos jatekos) {
             megtalaltKincsek++;
-            if (megtalaltKincsek == KINCSEK_SZAMA)
-                jatekVege = true;
+            jatekVege = megtalaltKincsek == KINCSEK_SZAMA;
         }
-        void JatekosValtozasTortent(Jatekos Jatekos, int ujpont, int ujelet) {
-            if (ujelet == 0)
-                jatekVege = true;
+        void JatekosValtozasTortent(Jatekos jatekos, int ujpont, int ujelet) {
+            jatekVege = ujelet == 0;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace OE.Prog2.Jatek.Megjelenites {
     class KonzolosEredmenyAblak {
         int pozX, pozY;
         int maxSorSzam;
-        int sor = 0;
+        int sor;
         public KonzolosEredmenyAblak(int pozX, int pozY, int maxSorSzam) {
             this.pozX = pozX;
             this.pozY = pozY;
