@@ -9,11 +9,12 @@ namespace OE.Prog2.Jatek.Keret {
         const int PALYA_MERET_X = 21;
         const int PALYA_MERET_Y = 11;
         const int KINCSEK_SZAMA = 10;
+        const int ELLENFELEK_SZAMA = 3;
         JatekTer ter;
         OrajelGenerator generator;
         int megtalaltKincsek;
+        Random R = new Random();
         void PalyaGeneralas() {
-            Random R = new Random();
             for (int i = 0; i < PALYA_MERET_X; i++) {
                 ter.Felvesz(new Fal(i, 0, ter));
                 ter.Felvesz(new Fal(i, PALYA_MERET_Y - 1, ter));
@@ -21,20 +22,6 @@ namespace OE.Prog2.Jatek.Keret {
             for (int i = 1; i < PALYA_MERET_Y - 1; i++) {
                 ter.Felvesz(new Fal(0, i, ter));
                 ter.Felvesz(new Fal(PALYA_MERET_X - 1, i, ter));
-            }
-            for (int i = 0; i < KINCSEK_SZAMA; i++) {
-                int ujx, ujy;
-                bool nemUres;
-                bool jatekos;
-                do {
-                    ujx = R.Next(1, PALYA_MERET_X - 1);
-                    ujy = R.Next(1, PALYA_MERET_Y - 1);
-                    nemUres = (ter.MegadottHelyenLevok(ujx, ujy)).Length != 0;
-                    jatekos = ujx == 1 && ujy == 1;
-                } while (nemUres || jatekos);
-                Kincs k = new Kincs(ujx, ujy, ter);
-                k.KincsFelvetel += KincsFelvetelTortent;
-                ter.Felvesz(k);
             }
         }
         public Keret() {
@@ -44,16 +31,35 @@ namespace OE.Prog2.Jatek.Keret {
         }
         bool jatekVege;
         public void Futtatas() {
-            Jatekos jatekos = new Jatekos("Bela", 1, 1, ter);
+            JatekElem[] elemek = new JatekElem[1 + ELLENFELEK_SZAMA + KINCSEK_SZAMA];
+            Jatekos jatekos = new Jatekos("Bela", -1, -1, ter);
+            elemek[0] = jatekos;
+            for (int i = 1; i < ELLENFELEK_SZAMA + 1; i++) {
+                if (R.Next(1, 101) > 50)
+                    elemek[i] = new GonoszGepiJatekos(String.Format("Gepi{0}", i), -1, -1, ter);
+                else
+                    elemek[i] = new GepiJatekos(String.Format("Gepi{0}", i), -1, -1, ter);
+                generator.Felvetel(elemek[i] as GepiJatekos);
+            }
+            for (int i = 4; i < elemek.Length; i++)
+                elemek[i] = new Kincs(-1, -1, ter);
+            BacktrackElhelyezo bte = new BacktrackElhelyezo(ter);
+            bool siker = false;
+            while (!siker) {
+                try {
+                    bte.Elhelyezes(elemek);
+                    siker = true;
+                }
+                catch (BackTrackNincsMegoldasException e) {
+                    siker = false;
+                    //Belső fal törlés?
+                }
+            }
             jatekos.JatekosValtozas += JatekosValtozasTortent;
-            GepiJatekos gJatekos = new GepiJatekos("Kati", 1, 2, ter);
-            GonoszGepiJatekos ggJatekos = new GonoszGepiJatekos("Laci", PALYA_MERET_X / 2, PALYA_MERET_Y / 2, ter);
             KonzolosMegjelenito km = new KonzolosMegjelenito(0, 0, ter);
             KonzolosMegjelenito plM = new KonzolosMegjelenito(25, 0, jatekos);
             KonzolosEredmenyAblak kea = new KonzolosEredmenyAblak(0, 12, 5);
             kea.JatekosFeliratkozas(jatekos);
-            generator.Felvetel(gJatekos);
-            generator.Felvetel(ggJatekos);
             generator.Felvetel(km);
             generator.Felvetel(plM);
             do {
