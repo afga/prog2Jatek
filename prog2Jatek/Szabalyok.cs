@@ -188,9 +188,8 @@ namespace OE.Prog2.Jatek.Szabalyok {
         bool Ft(int szint, int hely) {
             if (elemek[szint] is Jatekos)
                 return (uresPoziciok[hely, 0] > 0 && uresPoziciok[hely, 0] < (ter.MeretX - 1) && uresPoziciok[hely, 1] > 0 && uresPoziciok[hely, 1] < (ter.MeretY - 1));
-            
             return (uresPoziciok[hely, 0] > 1 && uresPoziciok[hely, 0] < (ter.MeretX - 2) && uresPoziciok[hely, 1] > 1 && uresPoziciok[hely, 1] < (ter.MeretY - 2));
-            
+
         }
         bool Fk(int szint, int hely, int k, int khely) {
             if (elemek[szint] is Jatekos && elemek[k] is Jatekos) {
@@ -204,7 +203,6 @@ namespace OE.Prog2.Jatek.Szabalyok {
                     return false;
                 if (xEgyenlo || yEgyenlo)
                     return false;
-                
                 return true;
             }
             else {
@@ -214,14 +212,36 @@ namespace OE.Prog2.Jatek.Szabalyok {
                 return tav <= 2;
             }
         }
-        void Backtrack(int szint, int[,] E, ref bool van) {
+        void Backtrack(int szint, int[] E, ref bool van) {
             int i = 0;
             while (!van && i < uresPoziciok.GetLength(0)) {
                 if (Ft(szint, i)) {
-                    int k = 1;
+                    int k = 0;
+                    while (k < szint && Fk(szint, i, k, E[k]))
+                        k++;
+                    if (k == szint) {
+                        E[szint] = i;
+                        if (szint == elemek.Length)
+                            van = true;
+                        else
+                            Backtrack(szint + 1, E, ref van);
+                    }
                 }
-
             }
         }
+        public void Elhelyezes(JatekElem[] elemek) {
+            this.elemek = elemek;
+            int[] E = new int[elemek.Length];
+            bool van = false;
+            Backtrack(0, E, ref van);
+            if (van)
+                for (int i = 0; i < elemek.Length; i++) {
+                    elemek[i].X = uresPoziciok[E[i], 0];
+                    elemek[i].Y = uresPoziciok[E[i], 1];
+                }
+            else
+                throw new BackTrackNincsMegoldasException();
+        }
     }
+    class BackTrackNincsMegoldasException : Exception { }
 }
