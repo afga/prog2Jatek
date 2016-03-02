@@ -50,7 +50,7 @@ namespace OE.Prog2.Jatek.Keret {
                     bte.Elhelyezes(elemek);
                     siker = true;
                 }
-                catch (BackTrackNincsMegoldasException e) {
+                catch (BackTrackNincsMegoldasException) {
                     siker = false;
                     //Belső fal törlés?
                 }

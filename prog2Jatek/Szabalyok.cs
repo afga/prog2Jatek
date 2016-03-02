@@ -92,7 +92,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
                             break;
                     }
                 }
-                catch (MozgasHelyHianyMiattNemSikerultKivetel k) {
+                catch (MozgasHelyHianyMiattNemSikerultKivetel) {
                     if (iter < 4) {
                         iter++;
                         x++;
@@ -175,15 +175,15 @@ namespace OE.Prog2.Jatek.Szabalyok {
         int[,] uresPoziciok;
         public BacktrackElhelyezo(JatekTer ter) {
             this.ter = ter;
-            int db = (ter.MeretX * ter.MeretY) - ter.ElemN;
+            int db = (ter.MeretX - 2) * (ter.MeretY - 2);
             uresPoziciok = new int[db, 2];
             int k = 0;
-            for (int i = 0; i < ter.MeretX; i++)
-                for (int j = 0; j < ter.MeretY; j++)
-                    if (ter.MegadottHelyenLevok(i, j).Length == 0) {
-                        uresPoziciok[k, 0] = i;
-                        uresPoziciok[k++, 1] = j;
-                    }
+            for (int i = 1; i < ter.MeretX - 1; i++)
+                for (int j = 1; j < ter.MeretY - 1; j++) {
+                    uresPoziciok[k, 0] = i;
+                    uresPoziciok[k, 1] = j;
+                    k++;
+                }
         }
         bool Ft(int szint, int hely) {
             if (elemek[szint] is Jatekos)
@@ -214,20 +214,24 @@ namespace OE.Prog2.Jatek.Szabalyok {
         }
         void Backtrack(int szint, int[] E, ref bool van) {
             int i = 0;
-            while (!van && i < uresPoziciok.GetLength(0)) {
-                if (Ft(szint, i)) {
-                    int k = 0;
-                    while (k < szint && Fk(szint, i, k, E[k]))
-                        k++;
-                    if (k == szint) {
-                        E[szint] = i;
-                        if (szint == elemek.Length)
-                            van = true;
-                        else
-                            Backtrack(szint + 1, E, ref van);
+            if (szint < E.Length)
+                while (!van && i < uresPoziciok.GetLength(0)) {
+                    if (Ft(szint, i)) {
+                        int k = 0;
+                        while (k < szint && Fk(szint, i, k, E[k]))
+                            k++;
+                        if (k == szint) {
+                            E[szint] = i;
+                            if (szint == elemek.Length)
+                                van = true;
+                            else
+                                Backtrack(szint + 1, E, ref van);
+                        }
                     }
+                    i++;
                 }
-            }
+            else
+                van = true;
         }
         public void Elhelyezes(JatekElem[] elemek) {
             this.elemek = elemek;
