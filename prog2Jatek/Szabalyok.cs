@@ -187,7 +187,10 @@ namespace OE.Prog2.Jatek.Szabalyok {
         }
         bool Ft(int szint, int hely) {
             if (elemek[szint] is Jatekos)
-                return (uresPoziciok[hely, 0] > 0 && uresPoziciok[hely, 0] < (ter.MeretX - 1) && uresPoziciok[hely, 1] > 0 && uresPoziciok[hely, 1] < (ter.MeretY - 1));
+                if ((uresPoziciok[hely, 0] == 1 || uresPoziciok[hely, 0] == (ter.MeretX - 2)) && uresPoziciok[hely, 1] > 0 && uresPoziciok[hely, 1] < (ter.MeretY - 1))
+                    return true;
+                else if ((uresPoziciok[hely, 1] == 1 || uresPoziciok[hely, 1] == (ter.MeretY - 2)) && uresPoziciok[hely, 0] > 0 && uresPoziciok[hely, 0] < (ter.MeretX - 1))
+                    return true;
             return (uresPoziciok[hely, 0] > 1 && uresPoziciok[hely, 0] < (ter.MeretX - 2) && uresPoziciok[hely, 1] > 1 && uresPoziciok[hely, 1] < (ter.MeretY - 2));
 
         }
@@ -209,7 +212,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
                 int xt = Math.Abs(uresPoziciok[hely, 0] - uresPoziciok[khely, 0]);
                 int yt = Math.Abs(uresPoziciok[hely, 1] - uresPoziciok[khely, 1]);
                 double tav = Math.Sqrt(xt * xt + yt * yt);
-                return tav <= 2;
+                return tav > 2;
             }
         }
         void Backtrack(int szint, int[] E, ref bool van) {

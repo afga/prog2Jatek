@@ -41,8 +41,11 @@ namespace OE.Prog2.Jatek.Keret {
                     elemek[i] = new GepiJatekos(String.Format("Gepi{0}", i), -1, -1, ter);
                 generator.Felvetel(elemek[i] as GepiJatekos);
             }
-            for (int i = 4; i < elemek.Length; i++)
+            for (int i = 4; i < elemek.Length; i++) {
                 elemek[i] = new Kincs(-1, -1, ter);
+                ter.Felvesz(elemek[i]);
+                (elemek[i] as Kincs).KincsFelvetel += KincsFelvetelTortent;
+            }
             BacktrackElhelyezo bte = new BacktrackElhelyezo(ter);
             bool siker = false;
             while (!siker) {
@@ -77,15 +80,15 @@ namespace OE.Prog2.Jatek.Keret {
                 catch (MozgasHelyHianyMiattNemSikerultKivetel k) {
                     Console.Beep(500 + k.Elemek.Length * 100, 10);
                 }
-                jatekVege = key.Key == ConsoleKey.Escape;
+                jatekVege = jatekVege || key.Key == ConsoleKey.Escape;
             } while (!jatekVege);
         }
         void KincsFelvetelTortent(Kincs kincs, Jatekos jatekos) {
             megtalaltKincsek++;
-            jatekVege = megtalaltKincsek == KINCSEK_SZAMA;
+            jatekVege = jatekVege || megtalaltKincsek == KINCSEK_SZAMA;
         }
         void JatekosValtozasTortent(Jatekos jatekos, int ujpont, int ujelet) {
-            jatekVege = ujelet == 0;
+            jatekVege = jatekVege || ujelet == 0;
         }
     }
 }
