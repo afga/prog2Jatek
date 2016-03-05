@@ -1,5 +1,4 @@
-﻿using System;
-using OE.Prog2.Jatek.Keret;
+﻿using OE.Prog2.Jatek.Keret;
 
 public class MainClass {
     public static void Main(string[] args) {

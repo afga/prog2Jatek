@@ -44,15 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Automatizmus.cs" />
+    <Compile Include="Automatizmus\AutomatikusanMukodo.cs" />
+    <Compile Include="Jatekter\JatekElemek.cs" />
     <Compile Include="Keret.cs" />
-    <Compile Include="Megjelenites.cs" />
-    <Compile Include="OrajelGenerator.cs" />
-    <Compile Include="Szabalyok.cs" />
-    <Compile Include="Jatekter.cs" />
+    <Compile Include="Megjelenites\KonzolosEredmenyAblak.cs" />
+    <Compile Include="Megjelenites\KonzolosMegjelenito.cs" />
+    <Compile Include="Megjelenites\MegjelenitoInterfacek.cs" />
+    <Compile Include="Automatizmus\OrajelGenerator.cs" />
+    <Compile Include="Szabalyok\FixJatekElemek.cs" />
+    <Compile Include="Szabalyok\GepiJatekosok.cs" />
+    <Compile Include="Szabalyok\Jatekos.cs" />
+    <Compile Include="Szabalyok\MozgasKivetelek.cs" />
+    <Compile Include="Szabalyok\BacktrackElhelyezo.cs" />
+    <Compile Include="Jatekter\Jatekter.cs" />
     <Compile Include="MainClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SzalbiztosKonzol.cs" />
+    <Compile Include="Megjelenites\SzalbiztosKonzol.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

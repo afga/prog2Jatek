@@ -1,17 +1,6 @@
-﻿using System;
-using OE.Prog2.Jatek.Automatizmus;
-using OE.Prog2.Jatek.Szabalyok;
+﻿using OE.Prog2.Jatek.Automatizmus;
 
 namespace OE.Prog2.Jatek.Megjelenites {
-    public interface IKirajzolhato {
-        int X { get; }
-        int Y { get; }
-        char Alak { get; }
-    }
-    public interface IMegjelenitheto {
-        int[] MegjelenitendoMeret { get; }
-        IKirajzolhato[] MegjelenitedoElemek();
-    }
     class KonzolosMegjelenito : IAutomatikusanMukodo {
         IMegjelenitheto forras;
         int pozX;
@@ -42,22 +31,5 @@ namespace OE.Prog2.Jatek.Megjelenites {
             Megjelenites();
         }
         public int MukodesIntervallum { get { return 1; } }
-    }
-    class KonzolosEredmenyAblak {
-        int pozX, pozY;
-        int maxSorSzam;
-        int sor;
-        public KonzolosEredmenyAblak(int pozX, int pozY, int maxSorSzam) {
-            this.pozX = pozX;
-            this.pozY = pozY;
-            this.maxSorSzam = maxSorSzam;
-        }
-        void JatekosValtozasTortent(Jatekos jatekos, int ujpont, int ujelet) {
-            SzalbiztosKonzol.KiirasXY(pozX, pozY + sor, string.Format("játékos neve: {0}, pontszáma: {1}, életereje: {2}                ", jatekos.Nev, ujpont, ujelet));
-            sor = sor + 1 >= maxSorSzam ? 0 : sor + 1;
-        }
-        public void JatekosFeliratkozas(Jatekos jatekos) {
-            jatekos.JatekosValtozas += JatekosValtozasTortent;
-        }
     }
 }
