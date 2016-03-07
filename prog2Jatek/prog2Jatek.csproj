@@ -55,7 +55,10 @@
     <Compile Include="Sources\Automatizmus\OrajelGenerator.cs" />
     <Compile Include="Sources\Szabalyok\FixJatekElemek.cs" />
     <Compile Include="Sources\Szabalyok\GepiJatekosok.cs" />
+    <Compile Include="Sources\Szabalyok\IMemoriabanTarolhato.cs" />
+    <Compile Include="Sources\Szabalyok\IMemoriabanTarolhatoEsMegszuno.cs" />
     <Compile Include="Sources\Szabalyok\Jatekos.cs" />
+    <Compile Include="Sources\Szabalyok\MemoriaFa.cs" />
     <Compile Include="Sources\Szabalyok\MozgasAdatok.cs" />
     <Compile Include="Sources\Szabalyok\MozgasKivetelek.cs" />
     <Compile Include="Sources\Szabalyok\BacktrackElhelyezo.cs" />
