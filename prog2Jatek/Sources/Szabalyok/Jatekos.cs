@@ -1,9 +1,11 @@
-﻿using OE.Prog2.Jatek.Jatekter;
+﻿using OE.Prog2.Jatek.Automatizmus;
+using OE.Prog2.Jatek.Jatekter;
 using OE.Prog2.Jatek.Megjelenites;
 
 namespace OE.Prog2.Jatek.Szabalyok {
     class Jatekos : MozgoJatekElem, IKirajzolhato, IMegjelenitheto {
         string nev;
+        IdoFuggoLancoltLista<MozgasAdatok> felvevo;
         public JatekosValtozasKezelo JatekosValtozas;
         public string Nev { get { return nev; } }
         public Jatekos(string nev, int x, int y, JatekTer ter)
@@ -34,6 +36,7 @@ namespace OE.Prog2.Jatek.Szabalyok {
             int ujx = X + rx;
             int ujy = Y + ry;
             AtHelyez(ujx, ujy);
+            felvevo.Rogzites(new MozgasAdatok(this, X, Y));
         }
         public IKirajzolhato[] MegjelenitedoElemek() {
             JatekElem[] kozel = ter.MegadottHelyenLevok(X, Y, 5);
@@ -47,6 +50,17 @@ namespace OE.Prog2.Jatek.Szabalyok {
                 if (k is IKirajzolhato)
                     vissza[i++] = k as IKirajzolhato;
             return vissza;
+        }
+        public void RogzitesInditas(OrajelGenerator gen) {
+            felvevo = new IdoFuggoLancoltLista<MozgasAdatok>();
+            felvevo.RogzitesInditas();
+            felvevo.Rogzites(new MozgasAdatok(this, X, Y));
+            gen.Felvetel(felvevo);
+        }
+        public void VisszajatszasInditas() {
+            eletero = 100;
+            Aktiv = true;
+            felvevo.IdozitettBejaras();
         }
     }
     delegate void JatekosValtozasKezelo(Jatekos jatekos, int ujpont, int ujelet);

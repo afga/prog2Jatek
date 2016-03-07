@@ -58,6 +58,8 @@ namespace OE.Prog2.Jatek.Keret {
                     //Belső fal törlés?
                 }
             }
+            for (int i = 0; i <= ELLENFELEK_SZAMA; i++)
+                (elemek[i] as Jatekos).RogzitesInditas(generator);
             jatekos.JatekosValtozas += JatekosValtozasTortent;
             KonzolosMegjelenito km = new KonzolosMegjelenito(0, 0, ter);
             KonzolosMegjelenito plM = new KonzolosMegjelenito(25, 0, jatekos);
@@ -82,6 +84,10 @@ namespace OE.Prog2.Jatek.Keret {
                 }
                 jatekVege = jatekVege || key.Key == ConsoleKey.Escape;
             } while (!jatekVege);
+            for (int i = 1; i <= ELLENFELEK_SZAMA; i++)
+                generator.Levetel((elemek[i] as GepiJatekos));
+            for (int i = 0; i <= ELLENFELEK_SZAMA; i++)
+                (elemek[i] as Jatekos).VisszajatszasInditas();
         }
         void KincsFelvetelTortent(Kincs kincs, Jatekos jatekos) {
             megtalaltKincsek++;
