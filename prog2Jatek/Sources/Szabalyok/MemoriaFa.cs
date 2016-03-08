@@ -1,4 +1,6 @@
-﻿namespace OE.Prog2.Jatek.Szabalyok {
+﻿using System;
+
+namespace OE.Prog2.Jatek.Szabalyok {
     class MemoriaFa {
         class FaElem {
             public int kulcs;
@@ -76,7 +78,84 @@
                             nincsBenne = true;
                     }
                 }
+                if (megvan) {
+                    FaElem torlendo = akt;
+                    if (szulo.bal == torlendo) {
+                        if (torlendo.bal != null)
+                            szulo.bal = torlendo.bal;
+                        if (torlendo.jobb != null) {
+                            if (szulo.bal == torlendo && torlendo.jobb.kulcs < szulo.kulcs)
+                                szulo.bal = torlendo.jobb;
+                            else {
+                                akt = szulo.jobb;
+                                bool siker = false;
+                                while (!siker) {
+                                    if (akt.kulcs > torlendo.jobb.kulcs)
+                                        if (akt.bal == null) {
+                                            akt.bal = torlendo.jobb;
+                                            siker = true;
+                                        }
+                                        else
+                                            akt = akt.bal;
+                                    else {
+                                        if (akt.jobb == null) {
+                                            akt.jobb = torlendo.jobb;
+                                            siker = true;
+                                        }
+                                        else
+                                            akt = akt.jobb;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        if (torlendo.jobb != null)
+                            szulo.jobb = torlendo.jobb;
+                        if (torlendo.bal != null) {
+                            if (szulo.jobb == torlendo && torlendo.bal.kulcs > szulo.kulcs)
+                                szulo.jobb = torlendo.bal;
+                            else {
+                                akt = szulo.bal;
+                                bool siker = false;
+                                while (!siker) {
+                                    if (akt.kulcs > torlendo.bal.kulcs)
+                                        if (akt.bal == null) {
+                                            akt.bal = torlendo.bal;
+                                            siker = true;
+                                        }
+                                        else
+                                            akt = akt.bal;
+                                    else {
+                                        if (akt.jobb == null) {
+                                            akt.jobb = torlendo.bal;
+                                            siker = true;
+                                        }
+                                        else
+                                            akt = akt.jobb;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (nincsBenne)
+                    throw new FabolTorlesSikertelen();
+            }
+        }
+        public IMemoriabanTarolhato[] Bejaras() {
+            IMemoriabanTarolhato[] res = new IMemoriabanTarolhato[meret];
+            int idx = 0;
+            ResztBejar(gyoker, ref idx, res);
+            return res;
+        }
+        void ResztBejar(FaElem gyok, ref int idx, IMemoriabanTarolhato[] res) {
+            if (gyok != null) {
+                res[idx++] = gyok.tartalom;
+                ResztBejar(gyok.bal, ref idx, res);
+                ResztBejar(gyok.jobb, ref idx, res);
             }
         }
     }
+    class FabolTorlesSikertelen : Exception { }
 }

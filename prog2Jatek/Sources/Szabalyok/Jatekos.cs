@@ -6,17 +6,17 @@ namespace OE.Prog2.Jatek.Szabalyok {
     class Jatekos : MozgoJatekElem, IKirajzolhato, IMegjelenitheto {
         string nev;
         IdoFuggoLancoltLista<MozgasAdatok> felvevo;
+        protected MemoriaFa memoria = new MemoriaFa();
         public JatekosValtozasKezelo JatekosValtozas;
         public string Nev { get { return nev; } }
+        public override double Meret { get { return 0.2; } }
+        public virtual char Alak { get { return Aktiv ? '\u263A' : '\u263B'; } }
+        public int[] MegjelenitendoMeret { get { return ter.MegjelenitendoMeret; } }
         public Jatekos(string nev, int x, int y, JatekTer ter)
             : base(x, y, ter) {
             this.nev = nev;
         }
-        public override double Meret { get { return 0.2; } }
-        public virtual char Alak { get { return Aktiv ? '\u263A' : '\u263B'; } }
-        public int[] MegjelenitendoMeret { get { return ter.MegjelenitendoMeret; } }
-        public override void Utkozes(JatekElem elem) {
-        }
+        public override void Utkozes(JatekElem elem) { }
         int eletero = 100;
         public void Serul(int hp) {
             if (eletero != 0) {
@@ -37,6 +37,10 @@ namespace OE.Prog2.Jatek.Szabalyok {
             int ujy = Y + ry;
             AtHelyez(ujx, ujy);
             felvevo.Rogzites(new MozgasAdatok(this, X, Y));
+            JatekElem[] kozel = ter.MegadottHelyenLevok(X, Y, 5);
+            for (int i = 0; i < kozel.Length; i++)
+                if (kozel[i] is IMemoriabanTarolhato)
+                    memoria.Beszuras(kozel[i] as IMemoriabanTarolhato);
         }
         public IKirajzolhato[] MegjelenitedoElemek() {
             JatekElem[] kozel = ter.MegadottHelyenLevok(X, Y, 5);
