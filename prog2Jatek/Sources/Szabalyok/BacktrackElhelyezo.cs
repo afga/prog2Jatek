@@ -13,9 +13,11 @@ namespace OE.Prog2.Jatek.Szabalyok {
             int k = 0;
             for (int i = 1; i < ter.MeretX - 1; i++)
                 for (int j = 1; j < ter.MeretY - 1; j++) {
-                    uresPoziciok[k, 0] = i;
-                    uresPoziciok[k, 1] = j;
-                    k++;
+                    if (ter.MegadottHelyenLevok(i, j).Length == 0) {
+                        uresPoziciok[k, 0] = i;
+                        uresPoziciok[k, 1] = j;
+                        k++;
+                    }
                 }
         }
         bool Ft(int szint, int hely) {

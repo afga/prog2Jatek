@@ -23,6 +23,155 @@ namespace OE.Prog2.Jatek.Keret {
                 ter.Felvesz(new Fal(0, i, ter));
                 ter.Felvesz(new Fal(PALYA_MERET_X - 1, i, ter));
             }
+            int falN = 1;
+            Fal[] falak = new Fal[PALYA_MERET_X * PALYA_MERET_Y];
+            bool[] kesz = new bool[falak.Length];
+            falak[0] = new Fal(2, 2, ter);
+            ter.Felvesz(falak[0]);
+            Fal aktualis = falak[0];
+            bool vege = false;
+            while (!vege) {
+                int dir = R.Next(0, 4);
+                bool siker = false;
+                bool fail = false;
+                int failC = 0;
+                while (!siker && !fail) {
+                    bool flag = false;
+                    switch (dir) {
+                        case 0:
+                            for (int i = 0; i < falN; i++)
+                                if (aktualis.Y - 2 < 2 || (falak[i].Y == aktualis.Y - 2 && falak[i].X == aktualis.X))
+                                    flag = true;
+                            if (!flag) {
+                                falak[falN++] = new Fal(aktualis.X, aktualis.Y - 2, ter);
+                                ter.Felvesz(falak[falN - 1]);
+                                //köztes fal???
+                                int kov = R.Next(0, falN - 1);
+                                while (kesz[kov])
+                                    kov = R.Next(0, falN - 1);
+                                aktualis = falak[kov];
+                                siker = true;
+                            }
+                            else {
+                                failC++;
+                                if (failC == 4) {
+                                    fail = true;
+                                    int ix = 0;
+                                    while (falak[ix] != aktualis) ix++;
+                                    if (falak[ix + 1] != null)
+                                        aktualis = falak[ix + 1];
+                                    else
+                                        vege = true;
+                                    kesz[ix] = true;
+                                }
+                                else {
+                                    dir++;
+                                    dir %= 4;
+                                }
+                            }
+                            break;
+                        case 1:
+                            for (int i = 0; i < falN; i++)
+                                if (aktualis.Y + 2 >= PALYA_MERET_Y - 2 || (falak[i].Y == aktualis.Y + 2 && falak[i].X == aktualis.X))
+                                    flag = true;
+                            if (!flag) {
+                                falak[falN++] = new Fal(aktualis.X, aktualis.Y + 2, ter);
+                                ter.Felvesz(falak[falN - 1]);
+                                //köztes fal???
+                                int kov = R.Next(0, falN - 1);
+                                while (kesz[kov])
+                                    kov = R.Next(0, falN - 1);
+                                aktualis = falak[kov];
+                                siker = true;
+                            }
+                            else {
+                                failC++;
+                                if (failC == 4) {
+                                    fail = true;
+                                    int ix = 0;
+                                    while (falak[ix] != aktualis) ix++;
+                                    if (falak[ix + 1] != null)
+                                        aktualis = falak[ix + 1];
+                                    else
+                                        vege = true;
+                                    kesz[ix] = true;
+                                }
+                                else {
+                                    dir++;
+                                    dir %= 4;
+                                }
+                            }
+                            break;
+                        case 2:
+                            for (int i = 0; i < falN; i++)
+                                if (aktualis.X + 2 >= PALYA_MERET_X - 2 || (falak[i].X == aktualis.X + 2 && falak[i].Y == aktualis.Y))
+                                    flag = true;
+                            if (!flag) {
+                                falak[falN++] = new Fal(aktualis.X + 2, aktualis.Y, ter);
+                                ter.Felvesz(falak[falN - 1]);
+                                //köztes fal???
+                                int kov = R.Next(0, falN - 1);
+                                while (kesz[kov])
+                                    kov = R.Next(0, falN - 1);
+                                aktualis = falak[kov];
+                                siker = true;
+                            }
+                            else {
+                                failC++;
+                                if (failC == 4) {
+                                    fail = true;
+                                    int ix = 0;
+                                    while (falak[ix] != aktualis) ix++;
+                                    if (falak[ix + 1] != null)
+                                        aktualis = falak[ix + 1];
+                                    else
+                                        vege = true;
+                                    kesz[ix] = true;
+                                }
+                                else {
+                                    dir++;
+                                    dir %= 4;
+                                }
+                            }
+                            break;
+                        case 3:
+                            for (int i = 0; i < falN; i++)
+                                if (aktualis.X - 2 < 2 || (falak[i].X == aktualis.X - 2 && falak[i].Y == aktualis.Y))
+                                    flag = true;
+                            if (!flag) {
+                                falak[falN++] = new Fal(aktualis.X - 2, aktualis.Y, ter);
+                                ter.Felvesz(falak[falN - 1]);
+                                //köztes fal???
+                                int kov = R.Next(0, falN - 1);
+                                while (kesz[kov])
+                                    kov = R.Next(0, falN - 1);
+                                aktualis = falak[kov];
+                                siker = true;
+                            }
+                            else {
+                                failC++;
+                                if (failC == 4) {
+                                    fail = true;
+                                    int ix = 0;
+                                    while (falak[ix] != aktualis) ix++;
+                                    if (falak[ix + 1] != null)
+                                        aktualis = falak[ix + 1];
+                                    else
+                                        vege = true;
+                                    kesz[ix] = true;
+                                }
+                                else {
+                                    dir++;
+                                    dir %= 4;
+                                }
+                            }
+                            break;
+                    }
+                }
+                int idx = 0;
+                while (kesz[idx]) idx++;
+                if (idx == falN) vege = true;
+            }
         }
         public Keret() {
             ter = new JatekTer(PALYA_MERET_X, PALYA_MERET_Y);
@@ -55,7 +204,13 @@ namespace OE.Prog2.Jatek.Keret {
                 }
                 catch (BackTrackNincsMegoldasException) {
                     siker = false;
-                    //Belső fal törlés?
+                    int tx = R.Next(2, PALYA_MERET_X - 2);
+                    int ty = R.Next(2, PALYA_MERET_Y - 2);
+                    while(!(ter.MegadottHelyenLevok(tx,ty)[0] is Fal)) {
+                        tx = R.Next(2, PALYA_MERET_X - 2);
+                        ty = R.Next(2, PALYA_MERET_Y - 2);
+                    }
+                    Fal tor = ter.MegadottHelyenLevok(tx, ty)[0] as Fal;
                 }
             }
             for (int i = 0; i <= ELLENFELEK_SZAMA; i++)
