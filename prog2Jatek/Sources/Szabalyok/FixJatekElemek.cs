@@ -2,7 +2,7 @@
 using OE.Prog2.Jatek.Megjelenites;
 
 namespace OE.Prog2.Jatek.Szabalyok {
-    class Fal : RogzitettJatekElem, IKirajzolhato {
+    class Fal : RogzitettJatekElem, IKirajzolhato, IMemoriabanTarolhato {
         public Fal(int x, int y, JatekTer ter)
             : base(x, y, ter) {
         }
@@ -11,8 +11,9 @@ namespace OE.Prog2.Jatek.Szabalyok {
         }
         public char Alak { get { return '\u2593'; } }
     }
-    class Kincs : RogzitettJatekElem, IKirajzolhato {
+    class Kincs : RogzitettJatekElem, IKirajzolhato, IMemoriabanTarolhatoEsMegszuno {
         public event KincsFelvetelKezelo KincsFelvetel;
+        public event MegszunesKezelo Megszunes;
         public Kincs(int x, int y, JatekTer ter)
             : base(x, y, ter) {
         }
@@ -22,9 +23,10 @@ namespace OE.Prog2.Jatek.Szabalyok {
             if (elem is Jatekos) {
                 (elem as Jatekos).PontotSzerez(50);
                 ter.Torol(this);
-                if (KincsFelvetel != null) {
+                if (KincsFelvetel != null)
                     KincsFelvetel(this, elem as Jatekos);
-                }
+                if (Megszunes != null)
+                    Megszunes(this as IMemoriabanTarolhato);
             }
         }
     }

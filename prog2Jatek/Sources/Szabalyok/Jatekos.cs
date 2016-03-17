@@ -44,13 +44,20 @@ namespace OE.Prog2.Jatek.Szabalyok {
         }
         public IKirajzolhato[] MegjelenitedoElemek() {
             JatekElem[] kozel = ter.MegadottHelyenLevok(X, Y, 5);
+            IMemoriabanTarolhato[] jatekosMemoria = memoria.Bejaras();
             int db = 0;
             foreach (JatekElem k in kozel)
+                if (k is IKirajzolhato)
+                    db++;
+            foreach (IMemoriabanTarolhato k in jatekosMemoria)
                 if (k is IKirajzolhato)
                     db++;
             IKirajzolhato[] vissza = new IKirajzolhato[db];
             int i = 0;
             foreach (JatekElem k in kozel)
+                if (k is IKirajzolhato)
+                    vissza[i++] = k as IKirajzolhato;
+            foreach (IMemoriabanTarolhato k in jatekosMemoria)
                 if (k is IKirajzolhato)
                     vissza[i++] = k as IKirajzolhato;
             return vissza;
