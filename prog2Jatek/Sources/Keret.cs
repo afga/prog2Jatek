@@ -36,140 +36,55 @@ namespace OE.Prog2.Jatek.Keret {
                 bool fail = false;
                 int failC = 0;
                 while (!siker && !fail) {
-                    bool flag = false;
+                    int dirModX = 0, dirModY = 0;
                     switch (dir) {
                         case 0:
-                            for (int i = 0; i < falN; i++)
-                                if (aktualis.Y - 2 < 2 || (falak[i].Y == aktualis.Y - 2 && falak[i].X == aktualis.X))
-                                    flag = true;
-                            if (!flag) {
-                                falak[falN++] = new Fal(aktualis.X, aktualis.Y - 2, ter);
-                                ter.Felvesz(falak[falN - 1]);
-                                Fal tmp = new Fal(aktualis.X, aktualis.Y - 1, ter);
-                                ter.Felvesz(tmp);
-                                int kov = R.Next(0, falN - 1);
-                                while (kesz[kov])
-                                    kov = R.Next(0, falN - 1);
-                                aktualis = falak[kov];
-                                siker = true;
-                            }
-                            else {
-                                failC++;
-                                if (failC == 4) {
-                                    fail = true;
-                                    int ix = 0;
-                                    while (falak[ix] != aktualis) ix++;
-                                    if (falak[ix + 1] != null)
-                                        aktualis = falak[ix + 1];
-                                    else
-                                        vege = true;
-                                    kesz[ix] = true;
-                                }
-                                else {
-                                    dir++;
-                                    dir %= 4;
-                                }
-                            }
+                            dirModY = -2;
                             break;
                         case 1:
-                            for (int i = 0; i < falN; i++)
-                                if (aktualis.Y + 2 >= PALYA_MERET_Y - 2 || (falak[i].Y == aktualis.Y + 2 && falak[i].X == aktualis.X))
-                                    flag = true;
-                            if (!flag) {
-                                falak[falN++] = new Fal(aktualis.X, aktualis.Y + 2, ter);
-                                ter.Felvesz(falak[falN - 1]);
-                                Fal tmp = new Fal(aktualis.X, aktualis.Y + 1, ter);
-                                ter.Felvesz(tmp);
-                                int kov = R.Next(0, falN - 1);
-                                while (kesz[kov])
-                                    kov = R.Next(0, falN - 1);
-                                aktualis = falak[kov];
-                                siker = true;
-                            }
-                            else {
-                                failC++;
-                                if (failC == 4) {
-                                    fail = true;
-                                    int ix = 0;
-                                    while (falak[ix] != aktualis) ix++;
-                                    if (falak[ix + 1] != null)
-                                        aktualis = falak[ix + 1];
-                                    else
-                                        vege = true;
-                                    kesz[ix] = true;
-                                }
-                                else {
-                                    dir++;
-                                    dir %= 4;
-                                }
-                            }
+                            dirModY = 2;
                             break;
                         case 2:
-                            for (int i = 0; i < falN; i++)
-                                if (aktualis.X + 2 >= PALYA_MERET_X - 2 || (falak[i].X == aktualis.X + 2 && falak[i].Y == aktualis.Y))
-                                    flag = true;
-                            if (!flag) {
-                                falak[falN++] = new Fal(aktualis.X + 2, aktualis.Y, ter);
-                                ter.Felvesz(falak[falN - 1]);
-                                Fal tmp = new Fal(aktualis.X + 1, aktualis.Y, ter);
-                                ter.Felvesz(tmp);
-                                int kov = R.Next(0, falN - 1);
-                                while (kesz[kov])
-                                    kov = R.Next(0, falN - 1);
-                                aktualis = falak[kov];
-                                siker = true;
-                            }
-                            else {
-                                failC++;
-                                if (failC == 4) {
-                                    fail = true;
-                                    int ix = 0;
-                                    while (falak[ix] != aktualis) ix++;
-                                    if (falak[ix + 1] != null)
-                                        aktualis = falak[ix + 1];
-                                    else
-                                        vege = true;
-                                    kesz[ix] = true;
-                                }
-                                else {
-                                    dir++;
-                                    dir %= 4;
-                                }
-                            }
+                            dirModX = 2;
                             break;
                         case 3:
-                            for (int i = 0; i < falN; i++)
-                                if (aktualis.X - 2 < 2 || (falak[i].X == aktualis.X - 2 && falak[i].Y == aktualis.Y))
-                                    flag = true;
-                            if (!flag) {
-                                falak[falN++] = new Fal(aktualis.X - 2, aktualis.Y, ter);
-                                ter.Felvesz(falak[falN - 1]);
-                                Fal tmp = new Fal(aktualis.X - 1, aktualis.Y, ter);
-                                ter.Felvesz(tmp);
-                                int kov = R.Next(0, falN - 1);
-                                while (kesz[kov])
-                                    kov = R.Next(0, falN - 1);
-                                aktualis = falak[kov];
-                                siker = true;
-                            }
-                            else {
-                                failC++;
-                                if (failC == 4) {
-                                    fail = true;
-                                    int ix = 0;
-                                    while (falak[ix] != aktualis) ix++;
-                                    if (falak[ix + 1] != null)
-                                        aktualis = falak[ix + 1];
-                                    else
-                                        vege = true;
-                                    kesz[ix] = true;
-                                }
-                                else {
-                                    dir++;
-                                    dir %= 4;
-                                }
-                            }
+                            dirModX = -2;
                             break;
+                    }
+                    bool flag = false;
+                    for (int i = 0; i < falN; i++)
+                        if ((aktualis.Y + dirModY < 2 || (falak[i].Y == aktualis.Y + dirModY && falak[i].X == aktualis.X + dirModX)) ||
+                            (aktualis.Y + dirModY >= PALYA_MERET_Y - 2 || (falak[i].Y == aktualis.Y + dirModY && falak[i].X == aktualis.X + dirModX)) ||
+                            (aktualis.X + dirModX >= PALYA_MERET_X - 2 || (falak[i].X == aktualis.X + dirModX && falak[i].Y == aktualis.Y + dirModY)) ||
+                            (aktualis.X + dirModX < 2 || (falak[i].X == aktualis.X + dirModX && falak[i].Y == aktualis.Y + dirModY)))
+                            flag = true;
+                    if (!flag) {
+                        falak[falN++] = new Fal(aktualis.X + dirModX, aktualis.Y + dirModY, ter);
+                        ter.Felvesz(falak[falN - 1]);
+                        Fal tmp = new Fal(aktualis.X + (dirModX / 2), aktualis.Y + (dirModY / 2), ter);
+                        ter.Felvesz(tmp);
+                        int kov = R.Next(0, falN - 1);
+                        while (kesz[kov])
+                            kov = R.Next(0, falN - 1);
+                        aktualis = falak[kov];
+                        siker = true;
+                    }
+                    else {
+                        failC++;
+                        if (failC == 4) {
+                            fail = true;
+                            int ix = 0;
+                            while (falak[ix] != aktualis) ix++;
+                            if (falak[ix + 1] != null)
+                                aktualis = falak[ix + 1];
+                            else
+                                vege = true;
+                            kesz[ix] = true;
+                        }
+                        else {
+                            dir++;
+                            dir %= 4;
+                        }
                     }
                 }
                 int idx = 0;
