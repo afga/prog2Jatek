@@ -45,7 +45,8 @@ namespace OE.Prog2.Jatek.Keret {
                             if (!flag) {
                                 falak[falN++] = new Fal(aktualis.X, aktualis.Y - 2, ter);
                                 ter.Felvesz(falak[falN - 1]);
-                                //köztes fal???
+                                Fal tmp = new Fal(aktualis.X, aktualis.Y - 1, ter);
+                                ter.Felvesz(tmp);
                                 int kov = R.Next(0, falN - 1);
                                 while (kesz[kov])
                                     kov = R.Next(0, falN - 1);
@@ -77,7 +78,8 @@ namespace OE.Prog2.Jatek.Keret {
                             if (!flag) {
                                 falak[falN++] = new Fal(aktualis.X, aktualis.Y + 2, ter);
                                 ter.Felvesz(falak[falN - 1]);
-                                //köztes fal???
+                                Fal tmp = new Fal(aktualis.X, aktualis.Y + 1, ter);
+                                ter.Felvesz(tmp);
                                 int kov = R.Next(0, falN - 1);
                                 while (kesz[kov])
                                     kov = R.Next(0, falN - 1);
@@ -109,7 +111,8 @@ namespace OE.Prog2.Jatek.Keret {
                             if (!flag) {
                                 falak[falN++] = new Fal(aktualis.X + 2, aktualis.Y, ter);
                                 ter.Felvesz(falak[falN - 1]);
-                                //köztes fal???
+                                Fal tmp = new Fal(aktualis.X + 1, aktualis.Y, ter);
+                                ter.Felvesz(tmp);
                                 int kov = R.Next(0, falN - 1);
                                 while (kesz[kov])
                                     kov = R.Next(0, falN - 1);
@@ -141,7 +144,8 @@ namespace OE.Prog2.Jatek.Keret {
                             if (!flag) {
                                 falak[falN++] = new Fal(aktualis.X - 2, aktualis.Y, ter);
                                 ter.Felvesz(falak[falN - 1]);
-                                //köztes fal???
+                                Fal tmp = new Fal(aktualis.X - 1, aktualis.Y, ter);
+                                ter.Felvesz(tmp);
                                 int kov = R.Next(0, falN - 1);
                                 while (kesz[kov])
                                     kov = R.Next(0, falN - 1);
@@ -206,7 +210,7 @@ namespace OE.Prog2.Jatek.Keret {
                     siker = false;
                     int tx = R.Next(2, PALYA_MERET_X - 2);
                     int ty = R.Next(2, PALYA_MERET_Y - 2);
-                    while(!(ter.MegadottHelyenLevok(tx,ty)[0] is Fal)) {
+                    while (!(ter.MegadottHelyenLevok(tx, ty)[0] is Fal)) {
                         tx = R.Next(2, PALYA_MERET_X - 2);
                         ty = R.Next(2, PALYA_MERET_Y - 2);
                     }
