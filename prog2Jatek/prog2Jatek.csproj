@@ -58,6 +58,7 @@
     <Compile Include="Sources\Szabalyok\IMemoriabanTarolhato.cs" />
     <Compile Include="Sources\Szabalyok\IMemoriabanTarolhatoEsMegszuno.cs" />
     <Compile Include="Sources\Szabalyok\Jatekos.cs" />
+    <Compile Include="Sources\Szabalyok\KincskeresoGraf.cs" />
     <Compile Include="Sources\Szabalyok\MemoriaFa.cs" />
     <Compile Include="Sources\Szabalyok\MozgasAdatok.cs" />
     <Compile Include="Sources\Szabalyok\MozgasKivetelek.cs" />
