@@ -36,27 +36,14 @@ namespace OE.Prog2.Jatek.Keret {
                 bool fail = false;
                 int failC = 0;
                 while (!siker && !fail) {
-                    int dirModX = 0, dirModY = 0;
-                    switch (dir) {
-                        case 0:
-                            dirModY = -2;
-                            break;
-                        case 1:
-                            dirModY = 2;
-                            break;
-                        case 2:
-                            dirModX = 2;
-                            break;
-                        case 3:
-                            dirModX = -2;
-                            break;
-                    }
+                    int dirModX = dir == 3 ? -2 : (dir == 2 ? 2 : 0);
+                    int dirModY = dir == 0 ? -2 : (dir == 1 ? 2 : 0);
                     bool flag = false;
                     for (int i = 0; i < falN; i++)
-                        if ((aktualis.Y + dirModY < 2 || (falak[i].Y == aktualis.Y + dirModY && falak[i].X == aktualis.X + dirModX)) ||
-                            (aktualis.Y + dirModY >= PALYA_MERET_Y - 2 || (falak[i].Y == aktualis.Y + dirModY && falak[i].X == aktualis.X + dirModX)) ||
-                            (aktualis.X + dirModX >= PALYA_MERET_X - 2 || (falak[i].X == aktualis.X + dirModX && falak[i].Y == aktualis.Y + dirModY)) ||
-                            (aktualis.X + dirModX < 2 || (falak[i].X == aktualis.X + dirModX && falak[i].Y == aktualis.Y + dirModY)))
+                        if (aktualis.Y + dirModY < 2 || aktualis.X + dirModX < 2 ||
+                            aktualis.Y + dirModY >= PALYA_MERET_Y - 2 ||
+                            aktualis.X + dirModX >= PALYA_MERET_X - 2 ||
+                            (falak[i].Y == aktualis.Y + dirModY && falak[i].X == aktualis.X + dirModX))
                             flag = true;
                     if (!flag) {
                         falak[falN++] = new Fal(aktualis.X + dirModX, aktualis.Y + dirModY, ter);
